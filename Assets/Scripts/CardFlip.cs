@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CardFlip : Clickable {
+public class CardFlip : MonoBehaviour {
   public Sprite frontSprite;
   public Sprite backSprite;
   public float uncoverTime = 12.0f;
@@ -35,11 +35,11 @@ public class CardFlip : Clickable {
     gameObject.AddComponent<BoxCollider2D>();
     gameObject.GetComponent<BoxCollider2D>().size = frontSprite.bounds.size;
 
-    ClickEvent += HandleClick;
+    gameObject.GetComponent<Clickable>().ClickEvent += HandleClick;
   }
 
-  // Update is called once per frame
-  protected void HandleClick() {
+
+  void HandleClick() {
     if (!flipped) {
       cardFront.GetComponent<SpriteRenderer>().sprite = frontSprite;
       cardBack.GetComponent<SpriteRenderer>().sprite = backSprite;

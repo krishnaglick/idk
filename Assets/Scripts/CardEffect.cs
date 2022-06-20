@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public enum EffectType {
   damage,
@@ -15,10 +12,9 @@ public class CardEffect : Clickable {
   public EffectType effectType;
   // Start is called before the first frame update
   void Start() {
-    ClickEvent += HandleClick;
+    gameObject.GetComponent<Clickable>().ClickEvent += HandleClick;
   }
 
-  // Update is called once per frame
   void HandleClick() {
     Debug.Log("clicked");
   }
