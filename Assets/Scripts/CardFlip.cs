@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CardFlip : MonoBehaviour {
+public class CardFlip : Clickable {
   public Sprite frontSprite;
   public Sprite backSprite;
   public float uncoverTime = 12.0f;
@@ -9,6 +9,7 @@ public class CardFlip : MonoBehaviour {
   private GameObject cardFront;
   private GameObject cardBack;
   private bool flipping = false;
+  private bool flipped = false;
 
   // Use this for initialization
   protected void Start() {
@@ -33,22 +34,18 @@ public class CardFlip : MonoBehaviour {
 
     gameObject.AddComponent<BoxCollider2D>();
     gameObject.GetComponent<BoxCollider2D>().size = frontSprite.bounds.size;
+
+    ClickEvent += HandleClick;
   }
 
   // Update is called once per frame
-  protected void Update() {
-    if (Input.GetMouseButtonDown(0) || Input.touchCount > 0) {
-      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-      RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-
-      // we hit a card
-      if (hit.collider != null && hit.collider.gameObject == gameObject) {
-        cardFront.GetComponent<SpriteRenderer>().sprite = frontSprite;
-        cardBack.GetComponent<SpriteRenderer>().sprite = backSprite;
-        if (!flipping) {
-          flipping = true;
-          StartCoroutine(uncoverCard(hit.collider.gameObject.transform, true));
-        }
+  protected void HandleClick() {
+    if (!flipped) {
+      cardFront.GetComponent<SpriteRenderer>().sprite = frontSprite;
+      cardBack.GetComponent<SpriteRenderer>().sprite = backSprite;
+      if (!flipping) {
+        flipping = true;
+        StartCoroutine(uncoverCard(gameObject.transform, true));
       }
     }
   }
@@ -76,6 +73,7 @@ public class CardFlip : MonoBehaviour {
           var sprite = c.GetComponent<SpriteRenderer>();
           sprite.sortingOrder *= -1;
           flipping = false;
+          flipped = true;
 
           yield return null;
         }
