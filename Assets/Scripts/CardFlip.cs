@@ -39,13 +39,15 @@ public class CardFlip : MonoBehaviour {
   }
 
 
-  void HandleClick() {
+  void HandleClick(GameObject card) {
     if (!flipped) {
       cardFront.GetComponent<SpriteRenderer>().sprite = frontSprite;
       cardBack.GetComponent<SpriteRenderer>().sprite = backSprite;
       if (!flipping) {
         flipping = true;
-        StartCoroutine(uncoverCard(gameObject.transform, true));
+        // This seems to run twice. Idk why.
+        StartCoroutine(uncoverCard(card.transform, true));
+        gameObject.GetComponent<Clickable>().ClickEvent -= HandleClick;
       }
     }
   }
@@ -74,6 +76,9 @@ public class CardFlip : MonoBehaviour {
           sprite.sortingOrder *= -1;
           flipping = false;
           flipped = true;
+          if (flipped) {
+            Debug.Log(card.name + " flipped");
+          }
 
           yield return null;
         }

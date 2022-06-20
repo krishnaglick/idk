@@ -15,7 +15,7 @@ public class CardEffect : Clickable {
     gameObject.GetComponent<Clickable>().ClickEvent += HandleClick;
   }
 
-  void HandleClick() {
+  void HandleClick(GameObject card) {
     Debug.Log("clicked");
   }
 }

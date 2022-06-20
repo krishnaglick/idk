@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 public class Clickable : MonoBehaviour {
-  public Action ClickEvent;
+  public Action<GameObject> ClickEvent;
 
   void Update() {
     if (Input.GetMouseButtonDown(0) || Input.touchCount > 0) {
@@ -12,7 +12,7 @@ public class Clickable : MonoBehaviour {
       RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
       if (hit.collider != null && hit.collider.gameObject == gameObject) {
-        ClickEvent?.Invoke();
+        ClickEvent?.Invoke(gameObject);
       }
     }
   }
