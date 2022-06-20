@@ -21,9 +21,12 @@ public class SpawnCards : MonoBehaviour {
     for (int i = 0; i < size + 1; i++) {
       var card = Instantiate(cardPrefab, transform);
       card.transform.position += new Vector3(i * 10, 0, 0);
-      card.GetComponent<CardFlip>().frontSprite = cardFronts[i % cardFronts.Length];
-      card.GetComponent<CardFlip>().backSprite = cardBacks[i % cardBacks.Length];
+      var cardFront = cardFronts[i % cardFronts.Length];
+      var cardBack = cardBacks[i % cardBacks.Length];
+      card.GetComponent<CardFlip>().frontSprite = cardFront;
+      card.GetComponent<CardFlip>().backSprite = cardBack;
       card.GetComponent<CardEffect>().card = card;
+      card.name = cardFront.name + cardBack.name;
       hand.Add(card);
     }
 
