@@ -1,5 +1,9 @@
 {
   "cSpell.words": ["Behaviour", "Lerp", "Mathf", "Raycast"],
   "omnisharp.useModernNet": false,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+  "editor.formatOnType": true
 }

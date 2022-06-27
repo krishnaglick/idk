@@ -40,14 +40,14 @@ public class CardFlip : MonoBehaviour {
 
 
   void HandleClick(GameObject card) {
-    if (!flipped) {
+    if(!flipped) {
       cardFront.GetComponent<SpriteRenderer>().sprite = frontSprite;
       cardBack.GetComponent<SpriteRenderer>().sprite = backSprite;
-      if (!flipping) {
+      if(!flipping) {
         flipping = true;
         // This seems to run twice. Idk why.
-        StartCoroutine(uncoverCard(card.transform, true));
         gameObject.GetComponent<Clickable>().ClickEvent -= HandleClick;
+        StartCoroutine(uncoverCard(card.transform, true));
       }
     }
   }
@@ -59,26 +59,23 @@ public class CardFlip : MonoBehaviour {
     float t = 0;
     bool uncovered = false;
 
-    while (t < 1f) {
+    while(t < 1f) {
       t += Time.deltaTime * uncoverTime;
 
       float angle = Mathf.LerpAngle(minAngle, maxAngle, t);
       card.eulerAngles = new Vector2(0, angle);
 
-      if (((angle >= 90 && angle < 180) || (angle >= 270 && angle < 360)) && !uncovered) {
+      if(((angle >= 90 && angle < 180) || (angle >= 270 && angle < 360)) && !uncovered) {
         uncovered = true;
-        for (int i = 0; i < card.childCount; i++) {
+        flipping = false;
+        flipped = true;
+        for(int i = 0; i < card.childCount; i++) {
           // reverse sorting order to show the other side of the card
           // otherwise you would still see the same sprite because they are sorted
           // by order not distance (by default)
           Transform c = card.GetChild(i);
           var sprite = c.GetComponent<SpriteRenderer>();
           sprite.sortingOrder *= -1;
-          flipping = false;
-          flipped = true;
-          if (flipped) {
-            Debug.Log(card.name + " flipped");
-          }
 
           yield return null;
         }

@@ -1,5 +1,8 @@
 {
   "FormattingOptions": {
+    "UseTabs": false,
+    "IndentBlock": true,
+    "IndentBraces": true,
     "IndentationSize": 2,
     "NewLinesForBracesInLambdaExpressionBody": false,
     "NewLinesForBracesInAnonymousMethods": false,

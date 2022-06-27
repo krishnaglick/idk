@@ -17,5 +17,6 @@ public class CardEffect : Clickable {
 
   void HandleClick(GameObject card) {
     Debug.Log("clicked");
+    Camera.main.GetComponent<Message>().ShowMessage("asdf");
   }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,7 +6,13 @@ public class SpawnCards : MonoBehaviour {
   public Sprite[] cardFronts;
   public Sprite[] cardBacks;
   public GameObject cardPrefab;
-  // Start is called before the first frame update
+
+  static System.Random _R = new System.Random();
+  static T RandomEnumValue<T>() {
+    var v = Enum.GetValues(typeof(T));
+    return (T)v.GetValue(_R.Next(v.Length));
+  }
+
 
   protected void Start() {
     GenerateHand(); // This will ideally be called by a Player script
@@ -26,6 +33,7 @@ public class SpawnCards : MonoBehaviour {
       card.GetComponent<CardFlip>().frontSprite = cardFront;
       card.GetComponent<CardFlip>().backSprite = cardBack;
       card.GetComponent<CardEffect>().card = card;
+      card.GetComponent<CardEffect>().effectType = RandomEnumValue<EffectType>();
       card.name = cardFront.name + cardBack.name;
       hand.Add(card);
     }
