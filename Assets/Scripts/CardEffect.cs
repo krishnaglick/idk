@@ -18,6 +18,7 @@ public class CardEffect : Clickable {
   void HandleClick(GameObject card) {
     Debug.Log("clicked");
     //Camera.main.GetComponent<Message>().ShowMessage("asdf");
-    GameManager.DoFloatingText(transform.localPosition, "asdf", Color.black);
+    var message = effectType.ToString() + "-type card";
+    GameManager.DoFloatingText(new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), message, Color.black);
   }
 }
