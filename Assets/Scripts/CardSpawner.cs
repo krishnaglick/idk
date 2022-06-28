@@ -13,20 +13,27 @@ public class CardSpawner : MonoBehaviour {
     return (T)v.GetValue(_R.Next(v.Length));
   }
 
+  private GameObject GenerateCard(Vector3 position, EffectType effectType, Sprite cardFront, Sprite cardBack) {
+    var card = Instantiate(cardPrefab, position, Quaternion.identity);
+    card.transform.position = position;
+    card.GetComponent<CardFlip>().frontSprite = cardFront;
+    card.GetComponent<CardFlip>().backSprite = cardBack;
+    card.GetComponent<CardEffect>().card = card;
+    card.GetComponent<CardEffect>().effectType = effectType;
+    card.name = cardFront.name + cardBack.name;
+
+    return card;
+  }
+
   public List<GameObject> GenerateHand(Vector3 position, int cards = 5) {
     List<GameObject> hand = new();
     for(int i = 0; i < cards + 1; i++) {
-      var card = Instantiate(cardPrefab, position, Quaternion.identity);
-      card.transform.position = new Vector3(position.x + (i * 10), position.y, position.z);
-      var cardFront = cardFronts[i % cardFronts.Length];
-      var cardBack = cardBacks[i % cardBacks.Length];
-      card.GetComponent<CardFlip>().frontSprite = cardFront;
-      card.GetComponent<CardFlip>().backSprite = cardBack;
-      card.GetComponent<CardEffect>().card = card;
-      card.GetComponent<CardEffect>().effectType = RandomEnumValue<EffectType>();
-      card.name = cardFront.name + cardBack.name;
-      hand.Add(card);
+      var spawnCardPosition = new Vector3(position.x + (i * 10), position.y, position.z);
+      hand.Add(GenerateCard(spawnCardPosition, RandomEnumValue<EffectType>(), cardFronts[i % cardFronts.Length], cardBacks[i % cardBacks.Length]));
     }
+
+    var damageCardPosition = new Vector3(position.x + ((cards + 1) * 10), position.y, position.z);
+    hand.Add(GenerateCard(damageCardPosition, EffectType.damage, cardFronts[0], cardBacks[1]));
 
     return hand;
   }

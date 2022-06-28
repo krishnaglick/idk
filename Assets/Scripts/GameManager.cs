@@ -13,15 +13,30 @@ public class GameManager : MonoBehaviour {
     EffectsManager effectsManager = FindObjectOfType<EffectsManager>();
     GameObject floatingText = Instantiate(effectsManager.textPrefab, position, Quaternion.identity);
     floatingText.GetComponent<TMP_Text>().color = c;
-    floatingText.GetComponent<Message>().displayText = text;
+    floatingText.GetComponent<Message>().RenderTemporaryText(text);
   }
 
   public static List<GameObject> SpawnCards(Vector3 position, int cards = 5) {
     CardSpawner cardSpawner = FindObjectOfType<CardSpawner>();
     return cardSpawner.GenerateHand(position, cards);
   }
+
   public static GameObject SpawnEnemy(Vector3 position) {
     EnemyManager enemyManager = FindObjectOfType<EnemyManager>();
-    return enemyManager.SpawnEnemy(position);
+    var enemy = enemyManager.SpawnEnemy(position);
+
+    EffectsManager effectsManager = FindObjectOfType<EffectsManager>();
+    GameObject floatingText = Instantiate(effectsManager.textPrefab, enemy.transform.position, Quaternion.identity);
+
+    floatingText.GetComponent<TMP_Text>().color = Color.black;
+
+    enemy.GetComponent<Enemy>().HPText = floatingText;
+    enemy.GetComponent<Enemy>().HP = 20;
+
+    return enemy;
+  }
+
+  public static void Hit(GameObject target) {
+    target.GetComponent<Enemy>().HP -= 1;
   }
 }

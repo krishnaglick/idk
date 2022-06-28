@@ -9,7 +9,9 @@ public class CardFlip : MonoBehaviour {
   private GameObject cardFront;
   private GameObject cardBack;
   private bool flipping = false;
-  private bool flipped = false;
+
+  [HideInInspector]
+  public bool flipped = false;
 
   // Use this for initialization
   protected void Start() {

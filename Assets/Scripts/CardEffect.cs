@@ -16,9 +16,13 @@ public class CardEffect : Clickable {
   }
 
   void HandleClick(GameObject card) {
-    Debug.Log("clicked");
-    //Camera.main.GetComponent<Message>().ShowMessage("asdf");
     var message = effectType.ToString() + "-type card";
     GameManager.DoFloatingText(new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), message, Color.black);
+    var flipped = FindObjectOfType<CardFlip>().flipped;
+    if(flipped && effectType == EffectType.damage) {
+      var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+      var enemy = enemies[new System.Random().Next(0, enemies.Length)];
+      GameManager.Hit(enemy);
+    }
   }
 }
