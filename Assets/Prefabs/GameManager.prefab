@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 829571905345721209}
   - component: {fileID: 2857963972890621707}
   - component: {fileID: -5621632508297067400}
+  - component: {fileID: 7467478951008901907}
+  - component: {fileID: -1355940395477921409}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -58,3 +60,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textPrefab: {fileID: 7753541177169056541, guid: feabb3b8033cc0b438c5d34b25d18528, type: 3}
+--- !u!114 &7467478951008901907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7084773953916168385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc416e7a18eec9e45b2946b1a2dcd508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Enemies:
+  - {fileID: 21300000, guid: 2c3f27ea47ed5ff4b86111d25d3a8044, type: 3}
+--- !u!114 &-1355940395477921409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7084773953916168385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c916baf540a7043b997e6ea7e35785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardFronts:
+  - {fileID: 21300000, guid: fe5836d24ec7a4541822a59ddc00ad98, type: 3}
+  - {fileID: 21300000, guid: 127eb78cf3716634eb6471c3251b3478, type: 3}
+  - {fileID: 21300000, guid: b1dccd42b15ad80438dfcf6acad2fec6, type: 3}
+  cardBacks:
+  - {fileID: 21300000, guid: d6762384bb72e8f48a96ad4f14287f15, type: 3}
+  - {fileID: 21300000, guid: a2430bf8148a9d44c889d4aed91da58e, type: 3}
+  cardPrefab: {fileID: 3350894427549387077, guid: 82919b7d6f56d2044a621ae9c49d294e, type: 3}

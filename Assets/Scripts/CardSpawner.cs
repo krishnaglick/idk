@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnCards : MonoBehaviour {
+public class CardSpawner : MonoBehaviour {
   public Sprite[] cardFronts;
   public Sprite[] cardBacks;
   public GameObject cardPrefab;
@@ -13,21 +13,11 @@ public class SpawnCards : MonoBehaviour {
     return (T)v.GetValue(_R.Next(v.Length));
   }
 
-
-  protected void Start() {
-    GenerateHand(); // This will ideally be called by a Player script
-  }
-
-  // Update is called once per frame
-  protected void Update() {
-
-  }
-
-  public List<GameObject> GenerateHand(int size = 5) {
+  public List<GameObject> GenerateHand(Vector3 position, int cards = 5) {
     List<GameObject> hand = new();
-    for (int i = 0; i < size + 1; i++) {
-      var card = Instantiate(cardPrefab, transform);
-      card.transform.position += new Vector3(i * 10, 0, 0);
+    for(int i = 0; i < cards + 1; i++) {
+      var card = Instantiate(cardPrefab, position, Quaternion.identity);
+      card.transform.position = new Vector3(position.x + (i * 10), position.y, position.z);
       var cardFront = cardFronts[i % cardFronts.Length];
       var cardBack = cardBacks[i % cardBacks.Length];
       card.GetComponent<CardFlip>().frontSprite = cardFront;
