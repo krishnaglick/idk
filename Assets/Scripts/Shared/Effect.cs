@@ -18,30 +18,51 @@ public enum StatusEffect {
   immunity,
 }
 
-public class Effect {
-  public double effectValue;
-  public EffectType effectType;
-  public Effect(double effectValue, EffectType effectType) {
+public interface Effect {
+  public double effectValue { get; set; }
+  public EffectType effectType { get; set; }
+}
+
+public struct DamageEffect : Effect {
+  public double effectValue { get; set; }
+  public EffectType effectType { get; set; }
+  public DamageEffect(double effectValue, EffectType effectType) {
     this.effectValue = effectValue;
     this.effectType = effectType;
   }
 }
 
-public class DamageEffect : Effect {
-  public DamageEffect(double effectValue, EffectType effectType) : base(effectValue, effectType) { }
+public struct HealEffect : Effect {
+  public double effectValue { get; set; }
+  public EffectType effectType { get; set; }
+  public HealEffect(double effectValue, EffectType effectType) {
+    this.effectValue = effectValue;
+    this.effectType = effectType;
+  }
 }
 
-public class HealEffect : Effect {
-  public HealEffect(double effectValue, EffectType effectType) : base(effectValue, effectType) { }
+public interface EffectWithStatus : Effect {
+  public StatusEffect statusEffect { get; set; }
 }
 
-public class BuffEffect : Effect {
-  public StatusEffect statusEffect;
-  public BuffEffect(double effectValue, EffectType effectType, StatusEffect statusEffect) : base(effectValue, effectType) {
+public struct BuffEffect : EffectWithStatus {
+  public double effectValue { get; set; }
+  public EffectType effectType { get; set; }
+  public StatusEffect statusEffect { get; set; }
+  public BuffEffect(double effectValue, EffectType effectType, StatusEffect statusEffect) {
+    this.effectValue = effectValue;
+    this.effectType = effectType;
     this.statusEffect = statusEffect;
   }
 }
 
-public class DebuffEffect : BuffEffect {
-  public DebuffEffect(double effectValue, EffectType effectType, StatusEffect statusEffect) : base(effectValue, effectType, statusEffect) { }
+public class DebuffEffect : EffectWithStatus {
+  public double effectValue { get; set; }
+  public EffectType effectType { get; set; }
+  public StatusEffect statusEffect { get; set; }
+  public DebuffEffect(double effectValue, EffectType effectType, StatusEffect statusEffect) {
+    this.effectValue = effectValue;
+    this.effectType = effectType;
+    this.statusEffect = statusEffect;
+  }
 }
