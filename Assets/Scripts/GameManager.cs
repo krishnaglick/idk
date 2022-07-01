@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
@@ -17,26 +16,22 @@ public class GameManager : MonoBehaviour {
   }
 
   public static List<GameObject> SpawnCards(Vector3 position, int cards = 5) {
-    CardSpawner cardSpawner = FindObjectOfType<CardSpawner>();
+    var cardSpawner = FindObjectOfType<CardManager>();
     return cardSpawner.GenerateHand(position, cards);
   }
 
   public static GameObject SpawnEnemy(Vector3 position) {
     EnemyManager enemyManager = FindObjectOfType<EnemyManager>();
-    var enemy = enemyManager.SpawnEnemy(position);
-
-    EffectsManager effectsManager = FindObjectOfType<EffectsManager>();
-    GameObject floatingText = Instantiate(effectsManager.textPrefab, enemy.transform.position, Quaternion.identity);
-
-    floatingText.GetComponent<TMP_Text>().color = Color.black;
-
-    enemy.GetComponent<Enemy>().HPText = floatingText;
-    enemy.GetComponent<Enemy>().HP = 20;
-
-    return enemy;
+    return enemyManager.SpawnEnemy(position);
   }
 
-  public static void Hit(GameObject target) {
-    target.GetComponent<Enemy>().HP -= 1;
+  public static void Damage(GameObject target, int damage = 1) {
+    var HP = target.GetComponent<HP>();
+    HP.SetHP(HP.GetHP() - damage);
+  }
+
+  public static void Heal(GameObject target, int healing = 1) {
+    var HP = target.GetComponent<HP>();
+    HP.SetHP(HP.GetHP() + healing);
   }
 }

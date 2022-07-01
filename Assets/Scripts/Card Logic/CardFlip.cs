@@ -6,10 +6,12 @@ public class CardFlip : MonoBehaviour {
   public Sprite backSprite;
   public float uncoverTime = 12.0f;
 
+  [HideInInspector]
   private GameObject cardFront;
+  [HideInInspector]
   private GameObject cardBack;
+  [HideInInspector]
   private bool flipping = false;
-
   [HideInInspector]
   public bool flipped = false;
 
