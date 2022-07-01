@@ -20,11 +20,11 @@ public class CardEffect : MonoBehaviour {
         case HealEffect:
           description.AppendLine("Heals " + effect.effectValue + " using " + effect.effectType);
           break;
-        case DebuffEffect:
-          description.AppendLine("Reduces enemy " + effect.effectType + " " + ((DebuffEffect)effect).statusEffect + " by " + effect.effectValue + "%");
-          break;
         case BuffEffect:
           description.AppendLine("Improves " + effect.effectType + " " + ((BuffEffect)effect).statusEffect + " by " + effect.effectValue + "%");
+          break;
+        case DebuffEffect:
+          description.AppendLine("Reduces enemy " + effect.effectType + " " + ((DebuffEffect)effect).statusEffect + " by " + effect.effectValue + "%");
           break;
       }
     }
@@ -39,9 +39,23 @@ public class CardEffect : MonoBehaviour {
       var enemies = GameObject.FindGameObjectsWithTag("Enemy");
       // Get random enemy. Only one enemy right now.
       var enemy = enemies[new System.Random().Next(0, enemies.Length)];
-
-      // TODO: Loop through effects and apply them
-      GameManager.Damage(enemy);
+      foreach(var effect in effects) {
+        switch(effect) {
+          case DamageEffect:
+            GameManager.Damage(enemy, (int)effect.effectValue);
+            break;
+          case HealEffect:
+            // TODO: This should be "self", not enemy
+            GameManager.Heal(enemy, (int)effect.effectValue);
+            break;
+          case BuffEffect:
+            // TODO: Allow for buff application and stacking
+            break;
+          case DebuffEffect:
+            // TODO: Allow for debuff application and stacking
+            break;
+        }
+      }
     }
   }
 }
