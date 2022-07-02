@@ -42,11 +42,11 @@ public class CardEffect : MonoBehaviour {
       foreach(var effect in effects) {
         switch(effect) {
           case DamageEffect:
-            GameManager.Damage(enemy, (int)effect.effectValue);
+            GameManager.Damage(enemy, effect.effectValue);
             break;
           case HealEffect:
             // TODO: This should be "self", not enemy
-            GameManager.Heal(enemy, (int)effect.effectValue);
+            GameManager.Heal(enemy, effect.effectValue);
             break;
           case BuffEffect:
             // TODO: Allow for buff application and stacking

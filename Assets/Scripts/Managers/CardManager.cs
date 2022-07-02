@@ -46,7 +46,7 @@ public class CardManager : MonoBehaviour {
       case 3:
         return new DebuffEffect(new System.Random().Next(1, 10), RandomEnumValue<EffectType>((int)EffectType.transcendent), RandomEnumValue<StatusEffect>());
       default:
-        Debug.Log("rand is not an expected value: " + rand);
+        Debug.LogError("rand is not an expected value: " + rand);
         return new DamageEffect(new System.Random().Next(10), RandomEnumValue<EffectType>()); // This should never be hit.
     }
   }

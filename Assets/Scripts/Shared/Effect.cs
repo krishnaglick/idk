@@ -19,23 +19,23 @@ public enum StatusEffect {
 }
 
 public interface Effect {
-  public double effectValue { get; set; }
+  public int effectValue { get; set; }
   public EffectType effectType { get; set; }
 }
 
 public struct DamageEffect : Effect {
-  public double effectValue { get; set; }
+  public int effectValue { get; set; }
   public EffectType effectType { get; set; }
-  public DamageEffect(double effectValue, EffectType effectType) {
+  public DamageEffect(int effectValue, EffectType effectType) {
     this.effectValue = effectValue;
     this.effectType = effectType;
   }
 }
 
 public struct HealEffect : Effect {
-  public double effectValue { get; set; }
+  public int effectValue { get; set; }
   public EffectType effectType { get; set; }
-  public HealEffect(double effectValue, EffectType effectType) {
+  public HealEffect(int effectValue, EffectType effectType) {
     this.effectValue = effectValue;
     this.effectType = effectType;
   }
@@ -46,10 +46,10 @@ public interface EffectWithStatus : Effect {
 }
 
 public struct BuffEffect : EffectWithStatus {
-  public double effectValue { get; set; }
+  public int effectValue { get; set; }
   public EffectType effectType { get; set; }
   public StatusEffect statusEffect { get; set; }
-  public BuffEffect(double effectValue, EffectType effectType, StatusEffect statusEffect) {
+  public BuffEffect(int effectValue, EffectType effectType, StatusEffect statusEffect) {
     this.effectValue = effectValue;
     this.effectType = effectType;
     this.statusEffect = statusEffect;
@@ -57,10 +57,10 @@ public struct BuffEffect : EffectWithStatus {
 }
 
 public class DebuffEffect : EffectWithStatus {
-  public double effectValue { get; set; }
+  public int effectValue { get; set; }
   public EffectType effectType { get; set; }
   public StatusEffect statusEffect { get; set; }
-  public DebuffEffect(double effectValue, EffectType effectType, StatusEffect statusEffect) {
+  public DebuffEffect(int effectValue, EffectType effectType, StatusEffect statusEffect) {
     this.effectValue = effectValue;
     this.effectType = effectType;
     this.statusEffect = statusEffect;
