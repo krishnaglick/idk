@@ -51,18 +51,18 @@ public class CardManager : MonoBehaviour {
     }
   }
 
-  private Effect[] GetRandomEffects() {
+  private Effect[] GetRandomEffects(int? overRide = null) {
     var numberOfEffects = new System.Random().NextDouble();
     if(numberOfEffects > 0.9) {
-      return new Effect[] { GetRandomEffect(), GetRandomEffect(), GetRandomEffect(), GetRandomEffect(), GetRandomEffect() };
+      return new Effect[] { GetRandomEffect(overRide), GetRandomEffect(), GetRandomEffect(), GetRandomEffect(), GetRandomEffect() };
     } else if(numberOfEffects > 0.8) {
-      return new Effect[] { GetRandomEffect(), GetRandomEffect(), GetRandomEffect(), GetRandomEffect() };
+      return new Effect[] { GetRandomEffect(overRide), GetRandomEffect(), GetRandomEffect(), GetRandomEffect() };
     } else if(numberOfEffects > 0.6) {
-      return new Effect[] { GetRandomEffect(), GetRandomEffect(), GetRandomEffect() };
+      return new Effect[] { GetRandomEffect(overRide), GetRandomEffect(), GetRandomEffect() };
     } else if(numberOfEffects > 0.4) {
-      return new Effect[] { GetRandomEffect(), GetRandomEffect() };
+      return new Effect[] { GetRandomEffect(overRide), GetRandomEffect() };
     } else {
-      return new Effect[] { GetRandomEffect() };
+      return new Effect[] { GetRandomEffect(overRide) };
     }
   }
 
@@ -70,12 +70,12 @@ public class CardManager : MonoBehaviour {
     List<GameObject> hand = new();
     for(int i = 0; i < cards + 1; i++) {
       var spawnCardPosition = new Vector3(position.x + (i * 10), position.y, position.z);
-      hand.Add(GenerateCard(spawnCardPosition, GetRandomEffects(), cardFronts[i % cardFronts.Length], cardBacks[i % cardBacks.Length]));
+      hand.Add(GenerateCard(spawnCardPosition, GetRandomEffects(i > 3 ? null : i), cardFronts[i % cardFronts.Length], cardBacks[i % cardBacks.Length]));
     }
 
     // Guarentee a damage card for testing. Should really just create 1 of each type manually.
-    var damageCardPosition = new Vector3(position.x + ((cards + 1) * 10), position.y, position.z);
-    hand.Add(GenerateCard(damageCardPosition, new Effect[] { GetRandomEffect(0) }, cardFronts[0], cardBacks[1]));
+    //var damageCardPosition = new Vector3(position.x + ((cards + 1) * 10), position.y, position.z);
+    //hand.Add(GenerateCard(damageCardPosition, new Effect[] { GetRandomEffect(0) }, cardFronts[0], cardBacks[1]));
 
     return hand;
   }

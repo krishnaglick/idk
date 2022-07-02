@@ -13,8 +13,12 @@ public class Message : MonoBehaviour {
     });
   }
 
-  public void RenderText(string text) {
+  public void RenderText(string text, Vector3? location = null) {
     var tmp_text = GetComponent<TMP_Text>();
     tmp_text.text = text;
+    if(location != null) {
+      // Stupid C#
+      tmp_text.transform.position = (Vector3)location;
+    }
   }
 }

@@ -32,10 +32,10 @@ public class CardEffect : MonoBehaviour {
   }
 
   void HandleClick(GameObject card) {
-    var description = GetDescription();
-    GameManager.DoFloatingText(new Vector3(transform.position.x, transform.position.y + 30, transform.position.z), description, Color.black);
     var flipped = FindObjectOfType<CardFlip>().flipped;
     if(flipped) {
+      var description = GetDescription();
+      GameManager.DoFloatingText(new Vector3(transform.position.x, transform.position.y + 30, transform.position.z), description, Color.black);
       var enemies = GameObject.FindGameObjectsWithTag("Enemy");
       // Get random enemy. Only one enemy right now.
       var enemy = enemies[new System.Random().Next(0, enemies.Length)];
@@ -49,10 +49,10 @@ public class CardEffect : MonoBehaviour {
             GameManager.Heal(enemy, effect.effectValue);
             break;
           case BuffEffect:
-            // TODO: Allow for buff application and stacking
+            GameManager.ApplyBuff(enemy, (BuffEffect)effect);
             break;
           case DebuffEffect:
-            // TODO: Allow for debuff application and stacking
+            GameManager.ApplyDebuff(enemy, (DebuffEffect)effect);
             break;
         }
       }

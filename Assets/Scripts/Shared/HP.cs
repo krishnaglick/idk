@@ -8,7 +8,6 @@ public class HP : MonoBehaviour {
   }
 
   public void SetHP(int HP) {
-    Debug.Log(HP);
     _HP = HP;
   }
 }

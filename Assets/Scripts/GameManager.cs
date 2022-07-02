@@ -34,4 +34,12 @@ public class GameManager : MonoBehaviour {
     var HP = target.GetComponent<HP>();
     HP.SetHP(HP.GetHP() + healing);
   }
+
+  public static void ApplyBuff(GameObject target, BuffEffect effect) {
+    BuffManager.ApplyBuff(target, effect);
+  }
+
+  public static void ApplyDebuff(GameObject target, DebuffEffect effect) {
+    BuffManager.ApplyDebuff(target, effect);
+  }
 }

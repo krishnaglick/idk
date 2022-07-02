@@ -10,6 +10,13 @@ public class Enemy : MonoBehaviour {
   }
 
   private void OnGUI() {
-    HPText.GetComponent<Message>().RenderText(GetComponent<HP>().GetHP().ToString());
+    SpriteRenderer sr = GetComponent<SpriteRenderer>();
+    var x = transform.position.x - sr.bounds.extents.x;
+    var y = transform.position.y + sr.bounds.extents.y;
+    HPText.GetComponent<Message>().RenderText(GetComponent<HP>().GetHP().ToString(), new Vector3(x, y, transform.position.z));
+    if(TryGetComponent<BuffManager>(out var buffManager)) {
+      Debug.Log("Buffs: " + buffManager.buffs.Count);
+      Debug.Log("Debuffs: " + buffManager.debuffs.Count);
+    }
   }
 }

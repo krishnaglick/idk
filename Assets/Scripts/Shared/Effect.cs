@@ -14,6 +14,7 @@ public enum EffectType {
 public enum StatusEffect {
   damage,
   healing,
+  absorb,
   resistance,
   immunity,
 }
