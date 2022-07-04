@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 // This manages buffs and debuffs
 public class BuffManager : MonoBehaviour {
@@ -10,7 +11,6 @@ public class BuffManager : MonoBehaviour {
   [HideInInspector]
   public Action BuffUpdateEvent;
 
-  // Unsure if these should be static
   public static void ApplyBuff(GameObject target, BuffEffect effect) {
     if(!target.TryGetComponent<BuffManager>(out var buffManager)) {
       buffManager = target.AddComponent<BuffManager>();
@@ -30,7 +30,6 @@ public class BuffManager : MonoBehaviour {
     buffManager.BuffUpdateEvent?.Invoke();
   }
 
-  // Unsure if these should be static
   public static void ApplyDebuff(GameObject target, DebuffEffect effect) {
     if(!target.TryGetComponent<BuffManager>(out var buffManager)) {
       buffManager = target.AddComponent<BuffManager>();
@@ -53,6 +52,11 @@ public class BuffManager : MonoBehaviour {
     buffManager.BuffUpdateEvent?.Invoke();
   }
 
+  private static string capitalizeEffectType(EffectType effectType) {
+    var effectTypeAsString = effectType.ToString();
+    return effectTypeAsString.First().ToString().ToUpper() + string.Join("", effectTypeAsString.Skip(1));
+  }
+
   // There's some implied game logic in here. Worth extracting somewhere when I know how I want this all to work
   public static string GenerateBuffText(BuffEffect buff) {
     switch(buff.statusEffect) {
@@ -63,7 +67,7 @@ public class BuffManager : MonoBehaviour {
             Debug.Log("Buff tried to apply " + buff.effectType + " absorbtion");
             break;
           default:
-            return "Absorbs " + (buff.effectValue != int.MaxValue ? (buff.effectValue + " points of ") : "") + buff.effectType + " damage";
+            return "Absorbs " + (buff.effectValue != int.MaxValue ? (buff.effectValue + " points of ") : "") + capitalizeEffectType(buff.effectType) + " damage";
         }
         break;
       case StatusEffect.damage:
@@ -77,7 +81,7 @@ public class BuffManager : MonoBehaviour {
             Debug.Log("Buff tried to apply " + buff.effectType + " damage boost");
             break;
           default:
-            return "Deals " + buff.effectValue + "% more " + buff.effectType + " damage";
+            return "Deals " + buff.effectValue + "% more " + capitalizeEffectType(buff.effectType) + " damage";
         }
         break;
       case StatusEffect.healing:
@@ -85,7 +89,7 @@ public class BuffManager : MonoBehaviour {
           case EffectType.nature:
           case EffectType.holy:
           case EffectType.water:
-            return "Does " + buff.effectValue + " " + buff.effectType + " healing every turn";
+            return "Does " + buff.effectValue + " " + capitalizeEffectType(buff.effectType) + " healing every turn";
           case EffectType.transcendent:
             // Edge-case: transcendant type healing just puts a shield on the unit
             // This may be better as a status effect.
@@ -101,7 +105,7 @@ public class BuffManager : MonoBehaviour {
             Debug.Log("Buff tried to apply " + buff.effectType + " immunity");
             break;
           default:
-            return "Immune to " + buff.effectType;
+            return "Immune to " + capitalizeEffectType(buff.effectType);
         }
         break;
       case StatusEffect.resistance:
@@ -116,7 +120,7 @@ public class BuffManager : MonoBehaviour {
           case EffectType.transcendent:
             return "Provides " + buff.effectValue + "% resistance to all damage";
           default:
-            return "Provides " + buff.effectValue + "% resistance to " + buff.effectType;
+            return "Provides " + buff.effectValue + "% resistance to " + capitalizeEffectType(buff.effectType);
         }
         break;
       default:
@@ -135,7 +139,7 @@ public class BuffManager : MonoBehaviour {
           case EffectType.nature:
           case EffectType.holy:
           case EffectType.water:
-            return "Absorbs " + (debuff.effectValue != int.MaxValue ? (debuff.effectValue + " points of ") : "") + debuff.effectType + " healing";
+            return "Absorbs " + (debuff.effectValue != int.MaxValue ? (debuff.effectValue + " points of ") : "") + capitalizeEffectType(debuff.effectType) + " healing";
           default:
             Debug.Log("Buff tried to apply " + debuff.effectType + " absorbtion");
             break;
@@ -148,7 +152,7 @@ public class BuffManager : MonoBehaviour {
           case EffectType.burn:
           case EffectType.frostbite:
           case EffectType.suffocation:
-            return "Deals " + debuff.effectValue + " " + debuff.effectType + " damage per turn";
+            return "Deals " + debuff.effectValue + " " + capitalizeEffectType(debuff.effectType) + " damage per turn";
           default:
             Debug.Log("Debuff tried to apply " + debuff.effectType + " damage per turn");
             break;
@@ -159,7 +163,7 @@ public class BuffManager : MonoBehaviour {
           case EffectType.nature:
           case EffectType.holy:
           case EffectType.water:
-            return "Reduces healing from  " + debuff.effectType + " sources by" + debuff.effectValue + "%";
+            return "Reduces healing from  " + capitalizeEffectType(debuff.effectType) + " sources by" + debuff.effectValue + "%";
           default:
             Debug.Log("Buff tried to apply " + debuff.effectType + " healing reduction");
             break;
@@ -175,7 +179,7 @@ public class BuffManager : MonoBehaviour {
             Debug.Log("Debuff tried to apply " + debuff.effectType + " damage boost");
             break;
           default:
-            return "Reduces " + debuff.effectType + " damage done by " + debuff.effectValue + "%";
+            return "Reduces " + capitalizeEffectType(debuff.effectType) + " damage done by " + debuff.effectValue + "%";
         }
         break;
       case StatusEffect.immunity:
