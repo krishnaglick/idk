@@ -25,9 +25,11 @@ public class CardManager : MonoBehaviour {
     card.transform.position = position;
     card.GetComponent<CardFlip>().frontSprite = cardFront;
     card.GetComponent<CardFlip>().backSprite = cardBack;
-    card.GetComponent<CardEffect>().card = card;
     card.GetComponent<CardEffect>().effects = effects;
     card.name = cardFront.name + cardBack.name;
+
+    var cardTextRenderer = Instantiate(FindObjectOfType<EffectsManager>().textPrefab, card.transform.position, Quaternion.identity);
+    card.GetComponent<CardText>().CardTextRenderer = cardTextRenderer;
 
     return card;
   }
@@ -70,13 +72,9 @@ public class CardManager : MonoBehaviour {
     List<GameObject> hand = new();
     for(int i = 0; i < cards + 1; i++) {
       var spawnCardPosition = new Vector3(position.x + (i * 10), position.y, position.z);
+      // Force at least one of each card type: Damage, Heal, Buff, and Debuff
       hand.Add(GenerateCard(spawnCardPosition, GetRandomEffects(i > 3 ? null : i), cardFronts[i % cardFronts.Length], cardBacks[i % cardBacks.Length]));
     }
-
-    // Guarentee a damage card for testing. Should really just create 1 of each type manually.
-    //var damageCardPosition = new Vector3(position.x + ((cards + 1) * 10), position.y, position.z);
-    //hand.Add(GenerateCard(damageCardPosition, new Effect[] { GetRandomEffect(0) }, cardFronts[0], cardBacks[1]));
-
     return hand;
   }
 }

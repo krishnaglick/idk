@@ -1,8 +1,10 @@
 public enum EffectType {
   transcendent,
+
   slashing,
   piercing,
   blunt,
+
   fire,
   ice,
   water,
@@ -10,6 +12,13 @@ public enum EffectType {
   lightning,
   holy,
   chaos,
+
+  bleed,
+  poison,
+  burn,
+  frostbite,
+  suffocation,
+  // More DOT damage types?
 }
 public enum StatusEffect {
   damage,

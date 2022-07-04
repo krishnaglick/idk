@@ -39,19 +39,15 @@ public class CardFlip : MonoBehaviour {
     gameObject.AddComponent<BoxCollider2D>();
     gameObject.GetComponent<BoxCollider2D>().size = frontSprite.bounds.size;
 
-    gameObject.GetComponent<Clickable>().ClickEvent += HandleClick;
   }
 
 
-  void HandleClick(GameObject card) {
+  private void OnMouseUp() {
     if(!flipped) {
-      cardFront.GetComponent<SpriteRenderer>().sprite = frontSprite;
-      cardBack.GetComponent<SpriteRenderer>().sprite = backSprite;
       if(!flipping) {
         flipping = true;
         // This seems to run twice. Idk why.
-        gameObject.GetComponent<Clickable>().ClickEvent -= HandleClick;
-        StartCoroutine(uncoverCard(card.transform, true));
+        StartCoroutine(uncoverCard(transform, true));
       }
     }
   }

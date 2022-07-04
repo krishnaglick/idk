@@ -1,6 +1,8 @@
 using UnityEngine;
+using System;
 
 public class HP : MonoBehaviour {
+  public Action HPUpdateEvent;
   private int _HP;
 
   public int GetHP() {
@@ -8,6 +10,9 @@ public class HP : MonoBehaviour {
   }
 
   public void SetHP(int HP) {
-    _HP = HP;
+    if(HP != _HP) {
+      _HP = HP;
+      HPUpdateEvent?.Invoke();
+    }
   }
 }
