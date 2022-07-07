@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Text;
+using System.Linq;
 
 [RequireComponent(typeof(BuffManager))]
 [RequireComponent(typeof(HP))]
@@ -23,20 +24,24 @@ public class Enemy : MonoBehaviour {
     status.AppendLine("HP: " + GetComponent<HP>().GetHP());
     if(TryGetComponent<BuffManager>(out var buffManager)) {
       // Add buffs to status
-      buffManager.buffs.ForEach(delegate (BuffEffect buff) {
-        var buffText = BuffManager.GenerateBuffText(buff);
-        if(buffText != "") {
-          status.AppendLine(buffText);
+      if(buffManager.AggregatedEffects.buffs != null) {
+        foreach(var buff in buffManager.AggregatedEffects.buffs) {
+          var buffText = BuffManager.GenerateBuffText(buff);
+          if(buffText != "") {
+            status.AppendLine(buffText);
+          }
         }
-      });
+      }
 
       // Add debuffs to status
-      buffManager.debuffs.ForEach(delegate (DebuffEffect debuff) {
-        var debuffText = BuffManager.GenerateDebuffText(debuff);
-        if(debuffText != "") {
-          status.AppendLine(debuffText);
+      if(buffManager.AggregatedEffects.debuffs != null) {
+        foreach(var debuff in buffManager.AggregatedEffects.debuffs) {
+          var debuffText = BuffManager.GenerateDebuffText(debuff);
+          if(debuffText != "") {
+            status.AppendLine(debuffText);
+          }
         }
-      });
+      }
     }
 
     HPText.GetComponent<Message>().RenderText(status.ToString(), new Vector3(x, y, transform.position.z));

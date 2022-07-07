@@ -110,4 +110,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menus: []
-  startMenuIndex: 0
+  startMenuIndex: -1

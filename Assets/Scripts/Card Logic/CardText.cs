@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Text;
+using System.Linq;
 
 public class CardText : MonoBehaviour {
   [HideInInspector]
@@ -7,6 +8,9 @@ public class CardText : MonoBehaviour {
 
   private string GetDescription(Effect[] effects) {
     var description = new StringBuilder();
+    var buffEffects = effects.OfType<BuffEffect>();
+    var debuffEffects = effects.OfType<DebuffEffect>();
+    var aggregatedEffects = BuffManager.Aggregate(buffEffects.ToArray(), debuffEffects.ToArray());
     foreach(var effect in effects) {
       switch(effect) {
         case DamageEffect:
@@ -15,23 +19,28 @@ public class CardText : MonoBehaviour {
         case HealEffect:
           description.AppendLine("Heals " + effect.effectValue + " using " + effect.effectType);
           break;
-        case BuffEffect:
-          var buffText = BuffManager.GenerateBuffText((BuffEffect)effect);
-          if(buffText != "") {
-            description.AppendLine(buffText);
-          }
-          break;
-        case DebuffEffect:
-          // TODO: Card effect text != buff/debuff text!
-          var debuffText = BuffManager.GenerateDebuffText((DebuffEffect)effect);
-          if(debuffText != "") {
-            description.AppendLine(debuffText);
-          }
+        default:
           break;
       }
     }
+
+    foreach(var buff in aggregatedEffects.buffs) {
+      var buffText = BuffManager.GenerateBuffText(buff);
+      if(buffText != "") {
+        description.AppendLine(buffText);
+      }
+    }
+
+    foreach(var debuff in aggregatedEffects.debuffs) {
+      var debuffText = BuffManager.GenerateDebuffText(debuff);
+      if(debuffText != "") {
+        description.AppendLine(debuffText);
+      }
+    }
+
     return description.ToString();
   }
+
   private void OnMouseOver() {
     var flipped = GetComponent<CardFlip>().flipped;
     if(flipped) {

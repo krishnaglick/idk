@@ -26,6 +26,8 @@ public enum StatusEffect {
   absorb,
   resistance,
   immunity,
+  energy,
+  health,
 }
 
 public interface Effect {
@@ -53,16 +55,21 @@ public struct HealEffect : Effect {
 
 public interface EffectWithStatus : Effect {
   public StatusEffect statusEffect { get; set; }
+  // How much of the buff is lost per turn
+  public int burnRate { get; set; }
 }
 
 public struct BuffEffect : EffectWithStatus {
   public int effectValue { get; set; }
   public EffectType effectType { get; set; }
   public StatusEffect statusEffect { get; set; }
-  public BuffEffect(int effectValue, EffectType effectType, StatusEffect statusEffect) {
+  public int burnRate { get; set; }
+
+  public BuffEffect(int effectValue, EffectType effectType, StatusEffect statusEffect, int burnRate) {
     this.effectValue = effectValue;
     this.effectType = effectType;
     this.statusEffect = statusEffect;
+    this.burnRate = burnRate;
   }
 }
 
@@ -70,9 +77,12 @@ public class DebuffEffect : EffectWithStatus {
   public int effectValue { get; set; }
   public EffectType effectType { get; set; }
   public StatusEffect statusEffect { get; set; }
-  public DebuffEffect(int effectValue, EffectType effectType, StatusEffect statusEffect) {
+  public int burnRate { get; set; }
+
+  public DebuffEffect(int effectValue, EffectType effectType, StatusEffect statusEffect, int burnRate) {
     this.effectValue = effectValue;
     this.effectType = effectType;
     this.statusEffect = statusEffect;
+    this.burnRate = burnRate;
   }
 }

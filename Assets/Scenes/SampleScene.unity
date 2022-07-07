@@ -182,6 +182,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8185715924246516289, guid: c3f0384345a908c4aa470d9ffb99f638, type: 3}
+      propertyPath: startMenuIndex
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3f0384345a908c4aa470d9ffb99f638, type: 3}
 --- !u!1 &519420028

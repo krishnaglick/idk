@@ -44,9 +44,19 @@ public class CardManager : MonoBehaviour {
         // I only want damage to potentially be transcendent
         return new HealEffect(new System.Random().Next(1, 10), RandomEnumValue<EffectType>((int)EffectType.transcendent));
       case 2:
-        return new BuffEffect(new System.Random().Next(1, 10), RandomEnumValue<EffectType>((int)EffectType.transcendent), RandomEnumValue<StatusEffect>());
+        return new BuffEffect(
+          new System.Random().Next(1, 10),
+          RandomEnumValue<EffectType>(),
+          RandomEnumValue<StatusEffect>(),
+          new System.Random().Next(0, 1)
+        ); ;
       case 3:
-        return new DebuffEffect(new System.Random().Next(1, 10), RandomEnumValue<EffectType>((int)EffectType.transcendent), RandomEnumValue<StatusEffect>());
+        return new DebuffEffect(
+          new System.Random().Next(1, 10),
+          RandomEnumValue<EffectType>(),
+          RandomEnumValue<StatusEffect>(),
+          new System.Random().Next(0, 1)
+        );
       default:
         Debug.LogError("rand is not an expected value: " + rand);
         return new DamageEffect(new System.Random().Next(10), RandomEnumValue<EffectType>()); // This should never be hit.

@@ -3,7 +3,7 @@ using System;
 
 public class MenuManager : MonoBehaviour {
   public GameObject[] menus;
-  public int startMenuIndex;
+  public int startMenuIndex = -1;
 
   private void Start() {
     ChangeActiveMenu(startMenuIndex);

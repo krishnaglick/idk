@@ -3,10 +3,27 @@ using UnityEngine;
 using System;
 using System.Linq;
 
+public struct EffectAggregation {
+  public BuffEffect[] buffs { get; }
+  public DebuffEffect[] debuffs { get; }
+
+  public EffectAggregation(BuffEffect[] buffs, DebuffEffect[] debuffs) {
+    this.buffs = buffs ?? new BuffEffect[] { };
+    this.debuffs = debuffs ?? new DebuffEffect[] { };
+  }
+}
+
 // This manages buffs and debuffs
 public class BuffManager : MonoBehaviour {
   public List<BuffEffect> buffs = new();
   public List<DebuffEffect> debuffs = new();
+
+  [HideInInspector]
+  public EffectAggregation AggregatedEffects;
+
+  private void Start() {
+    AggregatedEffects = Aggregate(buffs, debuffs);
+  }
 
   [HideInInspector]
   public Action BuffUpdateEvent;
@@ -16,17 +33,10 @@ public class BuffManager : MonoBehaviour {
       buffManager = target.AddComponent<BuffManager>();
     }
 
-    var buffIndex = buffManager.buffs.FindIndex(delegate (BuffEffect buff) {
-      return buff.effectType == effect.effectType && buff.statusEffect == effect.statusEffect;
-    });
+    // Always add a new buff/debuff, and sort it out @ the display level.
+    buffManager.buffs.Add(effect);
 
-    if(buffIndex == -1) {
-      buffManager.buffs.Add(effect);
-    } else {
-      // Structs be like
-      buffManager.buffs[buffIndex] = new BuffEffect(buffManager.buffs[buffIndex].effectValue + effect.effectValue, effect.effectType, effect.statusEffect);
-    }
-
+    buffManager.AggregatedEffects = Aggregate(buffManager.buffs, buffManager.debuffs);
     buffManager.BuffUpdateEvent?.Invoke();
   }
 
@@ -34,22 +44,42 @@ public class BuffManager : MonoBehaviour {
     if(!target.TryGetComponent<BuffManager>(out var buffManager)) {
       buffManager = target.AddComponent<BuffManager>();
     }
+    buffManager.debuffs.Add(effect);
 
-    var debuffIndex = buffManager.debuffs.FindIndex(delegate (DebuffEffect debuff) {
-      return debuff.effectType == effect.effectType && debuff.statusEffect == effect.statusEffect;
-    });
+    buffManager.AggregatedEffects = Aggregate(buffManager.buffs, buffManager.debuffs);
+    buffManager.BuffUpdateEvent?.Invoke();
+  }
 
-    if(debuffIndex == -1) {
-      buffManager.debuffs.Add(effect);
-    } else {
-      // Currently buffs & debuffs stack value. So if you have 4 fire resist and apply 4 more, you'll have 8; it's additive.
-      // I'm not yet sure how I want all this logic to play out, but additive is usually stronger than multiplicative.
-      // Buffs could be more individualistic, where you have two +4 fire resist.
-      // The current thought for buff/debuff decay is lose one stack/turn. But with the second option I can have a per-buff duration.
-      buffManager.debuffs[debuffIndex] = new DebuffEffect(buffManager.buffs[debuffIndex].effectValue + effect.effectValue, effect.effectType, effect.statusEffect);
+  public static EffectAggregation Aggregate(List<BuffEffect> buffs, List<DebuffEffect> debuffs) {
+    return Aggregate(buffs.ToArray(), debuffs.ToArray());
+  }
+  public static EffectAggregation Aggregate(BuffEffect[] buffs, DebuffEffect[] debuffs) {
+    var buffSum = new Dictionary<(EffectType, StatusEffect), BuffEffect>();
+    var debuffSum = new Dictionary<(EffectType, StatusEffect), DebuffEffect>();
+
+    foreach(var buff in buffs) {
+      var key = (buff.effectType, buff.statusEffect);
+      if(!buffSum.ContainsKey(key)) {
+        buffSum.Add(key, buff);
+      } else {
+        var effect = buffSum[key];
+        effect.effectValue += buff.effectValue;
+        buffSum[key] = effect;
+      }
     }
 
-    buffManager.BuffUpdateEvent?.Invoke();
+    foreach(var debuff in debuffs) {
+      var key = (debuff.effectType, debuff.statusEffect);
+      if(!debuffSum.ContainsKey(key)) {
+        debuffSum.Add(key, debuff);
+      } else {
+        var effect = debuffSum[key];
+        effect.effectValue += debuff.effectValue;
+        debuffSum[key] = effect;
+      }
+    }
+
+    return new EffectAggregation(buffSum.Values.ToArray(), debuffSum.Values.ToArray());
   }
 
   private static string capitalizeEffectType(EffectType effectType) {
