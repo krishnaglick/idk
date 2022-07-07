@@ -3,9 +3,16 @@ using TMPro;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
+  public bool testMode = false;
   private void Start() {
-    SpawnCards(Vector3.zero);
-    SpawnEnemy(new Vector3(Vector3.zero.x + 25, Vector3.zero.y + 20, Vector3.zero.z));
+    if(testMode) {
+      SpawnCards(Vector3.zero);
+      SpawnEnemy(new Vector3(Vector3.zero.x + 25, Vector3.zero.y + 20, Vector3.zero.z));
+    }
+    var menuManagers = FindObjectsOfType<MenuManager>();
+    if(menuManagers.Length > 1) {
+      throw new System.Exception("More than one MenuManager exists!");
+    }
   }
 
   public static void DoFloatingText(Vector3 position, string text, Color c) {

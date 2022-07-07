@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -5621632508297067400}
   - component: {fileID: 7467478951008901907}
   - component: {fileID: -1355940395477921409}
+  - component: {fileID: 8185715924246516289}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0cefffd8bcb1e84896b5212a2b7f685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testMode: 0
 --- !u!114 &-5621632508297067400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,3 +97,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d6762384bb72e8f48a96ad4f14287f15, type: 3}
   - {fileID: 21300000, guid: a2430bf8148a9d44c889d4aed91da58e, type: 3}
   cardPrefab: {fileID: 3350894427549387077, guid: 82919b7d6f56d2044a621ae9c49d294e, type: 3}
+--- !u!114 &8185715924246516289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7084773953916168385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f067920cbaae5142a61af6bf3710f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menus: []
+  startMenuIndex: 0
